@@ -251,6 +251,6 @@ Pour vous faciliter le tester des différents endpoints de l'API, vous pouvez ut
 
 - Importer les deux collections (collection_category et collection_recette) dans postman pour éfectuer les tests
 
-# Auteurs
+# Auteur
 
 [Mamoudou Adama Ba ](https://github.com/Mamoudou12)
