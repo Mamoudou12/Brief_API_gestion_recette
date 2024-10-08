@@ -71,12 +71,12 @@ export const createRecipe = [
     .withMessage("Type must be one of the following: entrée, plat, dessert"),
   handleValidationErrors,
   async (req, res) => {
-    const { title, ingredients, id_categorie, type } = req.body; 
+    const { title, ingredients, id_categorie, type } = req.body;
     try {
       const id = await Recipe.createRecipe(
         title,
         ingredients,
-        id_categorie, 
+        id_categorie,
         type
       );
       res.status(201).json({
@@ -84,7 +84,7 @@ export const createRecipe = [
         id,
         title,
         ingredients,
-        id_categorie, 
+        id_categorie,
         type,
       });
     } catch (err) {
@@ -114,7 +114,7 @@ export const updateRecipe = [
     .withMessage("Ingredients must be a string")
     .isLength({ min: 10, max: 500 })
     .withMessage("Ingredients must be between 10 and 500 characters"),
-  body("id_categorie") 
+  body("id_categorie")
     .optional()
     .isInt({ min: 1 })
     .withMessage("id_categorie must be a positive integer"),
@@ -127,13 +127,13 @@ export const updateRecipe = [
   handleValidationErrors,
   async (req, res) => {
     const { id } = req.params;
-    const { title, ingredients, id_categorie, type } = req.body; 
+    const { title, ingredients, id_categorie, type } = req.body;
     try {
       const affectedRows = await Recipe.updateRecipe(
         id,
         title,
         ingredients,
-        id_categorie, 
+        id_categorie,
         type
       );
       if (affectedRows === 0) {

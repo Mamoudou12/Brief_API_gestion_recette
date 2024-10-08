@@ -28,18 +28,18 @@ describe("Category tests", () => {
   it("can get a category by id", async () => {
     const getCategory = await Category.getCategoryById(categoryId);
     expect(getCategory).not.toBeNull();
-    expect(getCategory.title).toBe("Desserts"); 
+    expect(getCategory.title).toBe("Desserts");
   });
 
   it("can be updated", async () => {
-    const updatedCategory = { title: "Sweets" }; 
+    const updatedCategory = { title: "Sweets" };
     const result = await Category.updateCategory(
       categoryId,
-      updatedCategory.title 
+      updatedCategory.title
     );
     expect(result).toBe(1);
     const category = await Category.getCategoryById(categoryId);
-    expect(category.title).toBe("Sweets"); 
+    expect(category.title).toBe("Sweets");
   });
 
   it("can delete a category", async () => {

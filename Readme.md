@@ -153,10 +153,12 @@ npm start
 }
 
 6. Récupérer toutes les catégories
+
 - URL : /categories
 - Méthode : GET
 - Description : Renvoie la liste de toutes les catégories de recettes.
 - Exemple de réponse :
+
 ```bash
 [
   {
@@ -171,15 +173,19 @@ npm start
 ```
 
 7. Créer une nouvelle catégorie
+
 - URL : /categories
 - Méthode : POST
 - Corps :
+
 ```bash
 {
   "title": "Titre de la catégorie"
 }
 ```
+
 - Exemple de réponse :
+
 ```bash
 {
   "message": "Category successfully created!",
@@ -187,17 +193,19 @@ npm start
   "title": "Desserts"
 }
 ```
+
 8. Supprimer une catégorie
+
 - URL : /categories/:id
 - Méthode : DELETE
 - Paramètres : id (Requis, entier)
 - Exemple de réponse :
+
 ```bash
 {
   "message": "Category deleted successfully"
 }
 ```
-
 
 ### Codes de Statut HTTP
 
@@ -214,9 +222,12 @@ npm start
 ```
 
 ## Tests unitaires
+
 Des tests unitaires sont proposé pour vérifier le bon fonctionnement des fonctionnalités CRUD.
+
 - Framework utilisé : Jasmine
 - Executer les tests:
+
 ```bash
 npm test
 ```

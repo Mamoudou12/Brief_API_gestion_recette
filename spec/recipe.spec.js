@@ -8,13 +8,13 @@ describe("Recipe tests", () => {
       title: "crepe",
       ingredients: "flour, milk, eggs",
       id_categorie: 1,
-      type: "dessert", 
+      type: "dessert",
     };
     const result = await Recipe.createRecipe(
       recipe.title,
       recipe.ingredients,
       recipe.id_categorie,
-      recipe.type 
+      recipe.type
     );
 
     expect(result).not.toBeNull();
@@ -27,13 +27,13 @@ describe("Recipe tests", () => {
         title: null,
         ingredients: "flour, milk, eggs",
         id_categorie: 1,
-        type: "dessert", 
+        type: "dessert",
       };
       await Recipe.createRecipe(
         recipe.title,
         recipe.ingredients,
         recipe.id_categorie,
-        recipe.type 
+        recipe.type
       );
     } catch (error) {
       expect(error).toBeDefined();
@@ -57,7 +57,7 @@ describe("Recipe tests", () => {
       title: "Updated Title",
       ingredients: "Updated Ingredients",
       id_categorie: 2,
-      type: "Main Course", 
+      type: "Main Course",
     };
 
     const result = await Recipe.updateRecipe(
@@ -65,7 +65,7 @@ describe("Recipe tests", () => {
       updatedRecipe.title,
       updatedRecipe.ingredients,
       updatedRecipe.id_categorie,
-      updatedRecipe.type 
+      updatedRecipe.type
     );
 
     expect(result).toBeGreaterThan(0);
@@ -74,7 +74,7 @@ describe("Recipe tests", () => {
     expect(recipe.title).toBe(updatedRecipe.title);
     expect(recipe.ingredients).toBe(updatedRecipe.ingredients);
     expect(recipe.id_categorie).toBe(updatedRecipe.id_categorie);
-    expect(recipe.type).toBe(updatedRecipe.type); 
+    expect(recipe.type).toBe(updatedRecipe.type);
   });
 
   it("can delete a recipe", async () => {
