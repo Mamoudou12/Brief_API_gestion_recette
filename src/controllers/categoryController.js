@@ -40,7 +40,9 @@ export const createCategory = [
     .isString()
     .withMessage("Title must be a string")
     .notEmpty()
-    .withMessage("Title is required"),
+    .withMessage("Title is required")
+    .isLength({ max: 100 })
+    .withMessage("Title cannot exceed 100 characters"),
   handleValidationErrors,
   async (req, res) => {
     const { title } = req.body;
@@ -58,7 +60,11 @@ export const createCategory = [
 ];
 
 export const updateCategory = [
-  param("id").isInt({ min: 1 }).withMessage("ID must be a positive integer"),
+  param("id")
+    .isInt({ min: 1 })
+    .withMessage("ID must be a positive integer")
+    .isLength({ max: 100 })
+    .withMessage("Title cannot exceed 100 characters"),
   body("title").optional().isString().withMessage("Title must be a string"),
   handleValidationErrors,
   async (req, res) => {

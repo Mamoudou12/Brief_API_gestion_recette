@@ -12,10 +12,10 @@ describe("Category tests", () => {
 
   it("can not be created with invalid data", async () => {
     try {
-      const category = { title: null }; // Updated from name to title
+      const category = { title: null }; 
       await Category.createCategory(category.title);
     } catch (error) {
-      expect(error.message).toMatch(/Column 'title' cannot be null/); // Updated error message
+      expect(error.message).toMatch(/Column 'title' cannot be null/); 
     }
   });
 

@@ -36,32 +36,56 @@ export const getRecipeById = [
 ];
 
 export const createRecipe = [
-  body("title").isString().notEmpty().withMessage("Title is required"),
+  body("title")
+    .isString()
+    .withMessage("Title must be a string")
+    .isLength({ min: 5, max: 100 })
+    .withMessage("Title must be between 5 and 100 characters")
+    .notEmpty()
+    .withMessage("Title is required")
+    .custom(async (value) => {
+      const existingRecipe = await Recipe.getRecipeByTitle(value);
+      if (existingRecipe) {
+        throw new Error("Title must be unique");
+      }
+      return true;
+    }),
   body("ingredients")
     .isString()
+    .withMessage("Ingredients must be a string")
+    .isLength({ min: 10, max: 500 })
+    .withMessage("Ingredients must be between 10 and 500 characters")
     .notEmpty()
     .withMessage("Ingredients are required"),
-  body("id_categorie")
+  body("id_categorie")  // Updated field name
     .isInt({ min: 1 })
-    .withMessage("id_categorie must be a valid integer"),
-  body("type").isString().notEmpty().withMessage("Type is required"),
+    .withMessage("id_categorie must be a positive integer")
+    .notEmpty()
+    .withMessage("id_categorie is required"),
+  body("type")
+    .isString()
+    .withMessage("Type must be a string")
+    .notEmpty()
+    .withMessage("Type is required")
+    .isIn(["entrée", "plat", "dessert"])
+    .withMessage("Type must be one of the following: entrée, plat, dessert"),
   handleValidationErrors,
   async (req, res) => {
-    const { title, ingredients, id_categorie, type } = req.body; // Ajout de type ici
+    const { title, ingredients, id_categorie, type } = req.body; // Updated field name
     try {
       const id = await Recipe.createRecipe(
         title,
         ingredients,
-        id_categorie,
+        id_categorie,  // Updated field name
         type
-      ); // Passer type ici
+      );
       res.status(201).json({
         message: "Recipe successfully created!",
         id,
         title,
         ingredients,
-        id_categorie,
-        type, // Inclure type dans la réponse
+        id_categorie,  // Updated field name
+        type,
       });
     } catch (err) {
       res.status(500).json({ error: err.message });
@@ -71,27 +95,46 @@ export const createRecipe = [
 
 export const updateRecipe = [
   param("id").isInt({ min: 1 }).withMessage("ID must be a positive integer"),
-  body("title").optional().isString().withMessage("Title must be a string"),
+  body("title")
+    .optional()
+    .isString()
+    .withMessage("Title must be a string")
+    .isLength({ min: 5, max: 100 })
+    .withMessage("Title must be between 5 and 100 characters")
+    .custom(async (value, { req }) => {
+      const existingRecipe = await Recipe.getRecipeByTitle(value);
+      if (existingRecipe && existingRecipe.id !== parseInt(req.params.id)) {
+        throw new Error("Title must be unique");
+      }
+      return true;
+    }),
   body("ingredients")
     .optional()
     .isString()
-    .withMessage("Ingredients must be a string"),
-  body("id_categorie")
+    .withMessage("Ingredients must be a string")
+    .isLength({ min: 10, max: 500 })
+    .withMessage("Ingredients must be between 10 and 500 characters"),
+  body("id_categorie")  // Updated field name
     .optional()
     .isInt({ min: 1 })
-    .withMessage("id_categorie must be a valid integer"),
-  body("type").optional().isString().withMessage("Type must be a string"), // Ajout de type ici
+    .withMessage("id_categorie must be a positive integer"),
+  body("type")
+    .optional()
+    .isString()
+    .withMessage("Type must be a string")
+    .isIn(["entrée", "plat", "dessert"])
+    .withMessage("Type must be one of the following: entrée, plat, dessert"),
   handleValidationErrors,
   async (req, res) => {
     const { id } = req.params;
-    const { title, ingredients, id_categorie, type } = req.body; // Inclure type
+    const { title, ingredients, id_categorie, type } = req.body;  // Updated field name
     try {
       const affectedRows = await Recipe.updateRecipe(
         id,
         title,
         ingredients,
-        id_categorie,
-        type // Passer type ici
+        id_categorie,  // Updated field name
+        type
       );
       if (affectedRows === 0) {
         return res.status(404).json({ message: "Recipe not found" });

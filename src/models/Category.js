@@ -8,7 +8,7 @@ class Category {
 
   static async getCategoryById(id) {
     const [results] = await db.query(
-      "SELECT * FROM categories WHERE categorie_id = ?",
+      "SELECT * FROM categories WHERE id = ?",
       [id]
     );
     return results.length > 0 ? results[0] : null;
@@ -24,7 +24,7 @@ class Category {
 
   static async updateCategory(id, title) {
     const [result] = await db.query(
-      "UPDATE categories SET title = ? WHERE categorie_id = ?",
+      "UPDATE categories SET title = ? WHERE id = ?",
       [title, id]
     );
     return result.affectedRows;
@@ -32,7 +32,7 @@ class Category {
 
   static async deleteCategory(id) {
     const [result] = await db.query(
-      "DELETE FROM categories WHERE categorie_id = ?",
+      "DELETE FROM categories WHERE id = ?",
       [id]
     );
     return result.affectedRows;

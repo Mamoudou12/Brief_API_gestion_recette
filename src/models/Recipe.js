@@ -13,6 +13,14 @@ class Recipe {
     return results.length > 0 ? results[0] : null;
   }
 
+  // Nouvelle méthode pour obtenir une recette par titre
+  static async getRecipeByTitle(title) {
+    const [results] = await db.query("SELECT * FROM recipes WHERE title = ?", [
+      title,
+    ]);
+    return results.length > 0 ? results[0] : null;
+  }
+
   static async createRecipe(title, ingredients, id_categorie, type) {
     const [result] = await db.query(
       "INSERT INTO recipes (title, ingredients, id_categorie, type) VALUES (?, ?, ?, ?)",

@@ -8,7 +8,7 @@ describe("Recipe tests", () => {
       title: "crepe",
       ingredients: "flour, milk, eggs",
       id_categorie: 1,
-      type: "Dessert", // Ajout du type ici
+      type: "dessert", // Ajout du type ici
     };
     const result = await Recipe.createRecipe(
       recipe.title,
@@ -27,7 +27,7 @@ describe("Recipe tests", () => {
         title: null,
         ingredients: "flour, milk, eggs",
         id_categorie: 1,
-        type: "Dessert", // Ajout du type ici
+        type: "dessert", // Ajout du type ici
       };
       await Recipe.createRecipe(
         recipe.title,
