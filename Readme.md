@@ -6,17 +6,18 @@ Cette API permet de gérer des recettes de cuisine, incluant la création, la le
 
 - Node.js (version 14+ recommandée)
 - MySQL (version 5.7+)
+- Postman (pour les tester de l'API)
 
 # Installation
 
 1. Cloner le projet :
 
 ```bash
-git clone https://github.com/Mamoudou12/API_gestion_recette.git
+git https://github.com/Mamoudou12/Brief_API_gestion_recette.git
 ```
 
 ```bash
-cd API_gestion_recette
+cd Brief_API_gestion_recette
 ```
 
 2. Installer les dépendances :
@@ -27,19 +28,14 @@ npm install
 
 3. Configurer la base de données :
 
+- Créer un fichier .env à la racine de votre projet
+- copier les informations qui se trouvent dans le fichier .env.example puis utiliser les dans votre fichier .env
 - Mettre à jour les informations de connexion à la base de données (hôte, utilisateur, mot de passe, nom de la base de données).
 
-4. Initialiser la base de données :
-
-- Créez une base de données MySQL et assurez-vous que la table recipes existe avec la structure suivante :
+4. Importer via la ligne de commande le script sql :
 
 ```bash
-CREATE TABLE recipes (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  title VARCHAR(255) NOT NULL,
-  description TEXT NOT NULL,
-  date DATE NOT NULL
-);
+mysql -u [nom_utilisateur] -p [nom_base_de_donnees] < [chemin/vers/script.sql]
 ```
 
 5. Démarrer le serveur :
@@ -57,20 +53,24 @@ npm start
 - Description : Renvoie la liste de toutes les recettes.
 - Exemple de réponse :
 
+```bash
 [
-{
-"id": 1,
-"title": "Lasagnes",
-"description": "Délicieuses lasagnes faites maison",
-"date": "2023-08-20"
-},
-{
-"id": 2,
-"title": "Tarte aux pommes",
-"description": "Tarte classique avec des pommes",
-"date": "2023-08-15"
-}
+  {
+    "id": 1,
+    "title": "Lasagnes",
+    "ingredients": "Pâtes, Sauce tomate, Viande hachée",
+    "id_categorie": 2,
+    "type": "plat"
+  },
+  {
+    "id": 2,
+    "title": "Tarte aux pommes",
+    "ingredients": "Pommes, Pâte brisée, Sucre",
+    "id_categorie": 3,
+    "type": "dessert"
+  }
 ]
+```
 
 2. Récupérer une recette par ID
 
@@ -79,36 +79,60 @@ npm start
 - Paramètres : id (Requis, entier)
 - Description : Renvoie une recette spécifique par son ID.
 - Exemple de réponse :
-  {
-  "id": 1,
-  "title": "Lasagnes",
-  "description": "Délicieuses lasagnes faites maison",
-  "date": "2023-08-20"
-  }
+
+```bash
+{
+ "id": 1,
+ "title": "Lasagnes",
+ "ingredients": "Pâtes, Sauce tomate, Viande hachée",
+ "id_categorie": 2,
+ "type": "plat"
+}
+```
 
 3. Créer une nouvelle recette
 
 - URL : /recipes
 - Méthode : POST
 - Corps :
+  ```bash
   {
   "title": "Titre de la recette",
-  "description": "Description de la recette",
-  "date": "YYYY-MM-DD"
+  "ingredients": "Liste des ingrédients",
+  "id_categorie": 1,
+  "type": "plat"
   }
+  ```
+
+````
+- Exemple de réponse :
+
+```bash
+{
+  "message": "Recipe successfully created!",
+  "id": 3,
+  "title": "Quiche Lorraine",
+  "ingredients": "Pâte brisée, Lardons, Crème fraîche",
+  "id_categorie": 1,
+  "type": "plat"
+}
+````
 
 4.  Mettre à jour une recette
 
 - URL : /recipes/:id
 - Méthode : PUT
 - Paramètres : id (Requis, entier)
-- Corps :
+- Corps : Corps (facultatif, mettre à jour les champs souhaités) :
 
+```bash
 {
-"title": "Titre mis à jour",
-"description": "Description mise à jour",
-"date": "YYYY-MM-DD"
+  "title": "Titre mis à jour",
+  "ingredients": "Ingrédients mis à jour",
+  "id_categorie": 2,
+  "type": "dessert"
 }
+```
 
 - Exemple de réponse :
 
@@ -128,6 +152,53 @@ npm start
 "message": "Recipe deleted successfully"
 }
 
+6. Récupérer toutes les catégories
+- URL : /categories
+- Méthode : GET
+- Description : Renvoie la liste de toutes les catégories de recettes.
+- Exemple de réponse :
+```bash
+[
+  {
+    "id": 1,
+    "title": "Entrées"
+  },
+  {
+    "id": 2,
+    "title": "Plats principaux"
+  }
+]
+```
+
+7. Créer une nouvelle catégorie
+- URL : /categories
+- Méthode : POST
+- Corps :
+```bash
+{
+  "title": "Titre de la catégorie"
+}
+```
+- Exemple de réponse :
+```bash
+{
+  "message": "Category successfully created!",
+  "id": 4,
+  "title": "Desserts"
+}
+```
+8. Supprimer une catégorie
+- URL : /categories/:id
+- Méthode : DELETE
+- Paramètres : id (Requis, entier)
+- Exemple de réponse :
+```bash
+{
+  "message": "Category deleted successfully"
+}
+```
+
+
 ### Codes de Statut HTTP
 
 - 200 OK : La requête a été traitée avec succès.
@@ -142,24 +213,44 @@ npm start
 npm start
 ```
 
-## Les étapes pour construire et lancer le conteneur Docker:
-
-```bash
-docker compose up --build
-```
-
-```bash
-docker exec -it gestion_recettes mysql -u root -p
-```
-
-## Execusion des tests unitaire
-
+## Tests unitaires
+Des tests unitaires sont proposé pour vérifier le bon fonctionnement des fonctionnalités CRUD.
+- Framework utilisé : Jasmine
+- Executer les tests:
 ```bash
 npm test
 ```
 
+## Analyse et formatage du code
+
+Pour l'analyse statique du code j'ai utillisé ESLint et Prettier pour le formatage. Ces outils sont configurés pour maintenir un code propre et cohérent.
+
+Pour l'analyse du code Executer les commandes suivants:
+
+- Recherche des erreur:
+
+```bash
+npm run lint
+```
+
+- Fixer les erreurs corrigeable par ESLint:
+
+```bash
+npm run lint:fix
+```
+
+- formatage du code:
+
+```bash
+npm run format
+```
+
+## Collection Postman
+
+Pour vous faciliter le tester des différents endpoints de l'API, vous pouvez utiliser les collections Postman incluse dans ce projet. Elles contiennent toutes les requêtes configurées pour interagir avec l'API.
+
+- Importer les deux collections (collection_category et collection_recette) dans postman pour éfectuer les tests
+
 # Auteurs
 
 [Mamoudou Adama Ba ](https://github.com/Mamoudou12)
-
-[Aichetou Taher Sy ](https://github.com/shyshasy)
