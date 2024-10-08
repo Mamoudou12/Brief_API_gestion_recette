@@ -7,10 +7,9 @@ class Category {
   }
 
   static async getCategoryById(id) {
-    const [results] = await db.query(
-      "SELECT * FROM categories WHERE id = ?",
-      [id]
-    );
+    const [results] = await db.query("SELECT * FROM categories WHERE id = ?", [
+      id,
+    ]);
     return results.length > 0 ? results[0] : null;
   }
 
@@ -31,10 +30,9 @@ class Category {
   }
 
   static async deleteCategory(id) {
-    const [result] = await db.query(
-      "DELETE FROM categories WHERE id = ?",
-      [id]
-    );
+    const [result] = await db.query("DELETE FROM categories WHERE id = ?", [
+      id,
+    ]);
     return result.affectedRows;
   }
 }
